@@ -1,9 +1,10 @@
 <?php
 namespace SJBR\SrLanguageMenu\Controller;
+
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013-2014 Stanislas Rolland <typo3(arobas)sjbr.ca>
+ *  (c) 2013-2015 Stanislas Rolland <typo3(arobas)sjbr.ca>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -322,8 +323,7 @@ class MenuController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetControll
 		$this->settings['flagsExtension'] = 'png';
 		if ($this->settings['englishFlagFile']) {
 			$this->settings['flagsDirectory'] = dirname($this->getFrontendObject()->tmpl->getFileName(trim($this->settings['englishFlagFile']))) . '/';
-			$this->settings['flagsExtension'] = pathinfo(trim($this->settings['englishFlagFile']), PATHINFO_EXTENSION);
-			
+			$this->settings['flagsExtension'] = pathinfo(trim($this->settings['englishFlagFile']), PATHINFO_EXTENSION);		
 		}
 
 		// 'Hide default translation of page' configuration option
@@ -383,9 +383,9 @@ class MenuController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetControll
 				$this->configurationManager->setConfiguration($configurationOverridden);
 				ActionController::setViewConfiguration($view);
 				$this->configurationManager->setConfiguration($extbaseFrameworkConfiguration);
-			} else {
-				ActionController::setViewConfiguration($view);
 			}
+		} else {
+			ActionController::setViewConfiguration($view);
 		}
 	}
 
