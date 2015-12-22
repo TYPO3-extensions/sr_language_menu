@@ -1,3 +1,7 @@
+2015-12-22  Stanislas Rolland  <typo3(arobas)sjbr.ca>
+
+	* Resolves #71522: Languages not available should be removed from selector
+
 2015-12-21  Stanislas Rolland  <typo3(arobas)sjbr.ca>
 
 	* Resolves #72377: Using HTTP_GET_VARS is deprecated since PHP 4.1
