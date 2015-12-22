@@ -11,15 +11,17 @@
 				</f:if>
 			</f:if>
 			<f:for each="{options}" as="option">
-				<f:if condition="{option.uid} == 0">
-					<f:then>
-						<f:if condition="{settings.hideIfDefaultLanguage} == 0">
+				<f:if condition="{option.isAvailable}">
+					<f:if condition="{option.uid} == 0">
+						<f:then>
+							<f:if condition="{settings.hideIfDefaultLanguage} == 0">
+								<f:render partial="Option" arguments="{option: option, settings: settings}" />
+							</f:if>
+						</f:then>
+						<f:else>
 							<f:render partial="Option" arguments="{option: option, settings: settings}" />
-						</f:if>
-					</f:then>
-					<f:else>
-						<f:render partial="Option" arguments="{option: option, settings: settings}" />
-					</f:else>
+						</f:else>
+					</f:if>
 				</f:if>
 			</f:for>
 		</select>
