@@ -330,16 +330,23 @@ class MenuController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetControll
 		$this->settings['hideIfDefaultLanguage'] = GeneralUtility::hideIfDefaultLanguage($this->getFrontendObject()->page['l18n_cfg']);
 
 		// Adjust parameters to remove
-		if (!is_array($this->settings['removeParams'])) {
-			$this->settings['removeParams'] = GeneralUtility::trimExplode(',', $this->settings['removeParams'], TRUE);
-			// Add L and cHash to url parameters to remove
-			$this->settings['removeParams'] = array_merge($this->settings['removeParams'], array('L', 'cHash'));
-			// Add disallowed url query parameters
-			if ($this->settings['allowedParams']) {
-				$allowedParams = GeneralUtility::trimExplode(',', $this->settings['allowedParams'], TRUE);
+		if (isset($this->settings['removeParams'])) {
+			if (!is_array($this->settings['removeParams'])) {
+				$this->settings['removeParams'] = GeneralUtility::trimExplode(',', $this->settings['removeParams'], true);
+			}
+		} else {
+			$this->settings['removeParams'] = array();
+		}
+		// Add L and cHash to url parameters to remove
+		$this->settings['removeParams'] = array_merge($this->settings['removeParams'], array('L', 'cHash'));
+		// Add disallowed parameters to parameters to remove
+		if ($this->settings['allowedParams']) {
+			$getVariables = GeneralUtility::_GET();
+			if (isset($getVariables) && is_array($getVariables)) {
+				$allowedParams = GeneralUtility::trimExplode(',', $this->settings['allowedParams'], true);
 				$allowedParams = array_merge($allowedParams, array('L', 'id', 'type', 'MP'));
-				$allowedParams = array_merge($allowedParams, GeneralUtility::trimExplode(',', $this->getFrontendObject()->config['config']['linkVars'], TRUE));
-				$disallowedParams = array_diff(array_keys($GLOBALS['HTTP_GET_VARS']), $allowedParams);
+				$allowedParams = array_merge($allowedParams, GeneralUtility::trimExplode(',', $this->getFrontendObject()->config['config']['linkVars'] ?: '', true));
+				$disallowedParams = array_diff(array_keys($getVariables), $allowedParams);
 				// Add disallowed parameters to parameters to remove
 				$this->settings['removeParams'] = array_merge($this->settings['removeParams'], $disallowedParams);
 			}
