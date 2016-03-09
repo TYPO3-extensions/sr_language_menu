@@ -15,13 +15,13 @@
 	"issues": "https://forge.typo3.org/projects/extension-sr_language_menu/issues"
   },
   "replace": {
-    "sr_language_menu": "self.version",
-    "sjbr/sr_language_menu": "self.version",
+    "sr_language_menu": "*",
+    "sjbr/sr_language_menu": "*",
 	"typo3-ter/sr-language-menu": "self.version"
   },
   "require": {
-  	"typo3/cms-core": ">=6.2,<8.0"
-    "sjbr/static-info-tables": "~6.3.9"
+  	"typo3/cms-core": ">=6.2,<8.0",
+  	"sjbr/static-info-tables": ">=6.3.9,<6.4"
   },
   "autoload": {
     "psr-4": {

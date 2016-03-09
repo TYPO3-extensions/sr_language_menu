@@ -3,6 +3,7 @@
 	* Resolves #73974: Static Info Tables version to 6.3.9 breaks extension
 	* Require Static Info Tables 6.3.9
 	* Update version to 6.3.1
+	* Follow-up to Resolves #73974: Static Info Tables version to 6.3.9 breaks extension
 
 2015-12-22  Stanislas Rolland  <typo3(arobas)sjbr.ca>
 
