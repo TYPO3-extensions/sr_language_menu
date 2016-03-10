@@ -1,6 +1,7 @@
 2016-03-10  Stanislas Rolland  <typo3(arobas)sjbr.ca>
 
 	* Resolves #74818: Remove references to sysext cms labels removed from TYPO3 CMS 7.6
+	* Update version to 6.3.3
 
 2016-03-09  Stanislas Rolland  <typo3(arobas)sjbr.ca>
 
