@@ -32,10 +32,15 @@ $tempColumns = Array (
 
 $pluginSignature = strtolower(\TYPO3\CMS\Core\Utility\GeneralUtility::underscoredToUpperCamelCase('sr_language_menu')) . '_languagemenu';
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue('*', 'FILE:EXT:' . 'sr_language_menu' . '/Configuration/FlexForms/form.xml', $pluginSignature);
-
-$GLOBALS['TCA']['tt_content']['types'][$pluginSignature]['showitem'] = '--palette--;LLL:EXT:cms/locallang_ttc.xml:palette.general;general';
-$GLOBALS['TCA']['tt_content']['types'][$pluginSignature]['showitem'] .= ', --palette--;LLL:EXT:cms/locallang_ttc.xml:palette.headers;headers';
-$GLOBALS['TCA']['tt_content']['types'][$pluginSignature]['showitem'] .= ',--div--;LLL:EXT:sr_language_menu/Resources/Private/Language/locallang.xlf:settings.title;;;;3-3-3, pi_flexform';
-$GLOBALS['TCA']['tt_content']['types'][$pluginSignature]['showitem'] .= ',--div--;LLL:EXT:cms/locallang_ttc.xml:tabs.access, --palette--;LLL:EXT:cms/locallang_ttc.xml:palette.visibility;visibility, --palette--;LLL:EXT:cms/locallang_ttc.xml:palette.access;access';
-$GLOBALS['TCA']['tt_content']['types'][$pluginSignature]['showitem'] .= ', --div--;LLL:EXT:cms/locallang_ttc.xml:tabs.appearance, --palette--;LLL:EXT:cms/locallang_ttc.xml:palette.frames;frames';
 $GLOBALS['TCA']['tt_content']['ctrl']['typeicons'][$pluginSignature] = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('sr_language_menu') . 'Resources/Public/Images/language.png';
+
+if (\TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger(\TYPO3\CMS\Core\Utility\VersionNumberUtility::getNumericTypo3Version()) >= 7000000) {
+	$coreLabelsSource = 'frontend/Resources/Private/Language/';
+} else {
+	$coreLabelsSource = 'cms/';
+}
+$GLOBALS['TCA']['tt_content']['types'][$pluginSignature]['showitem'] = '--palette--;LLL:EXT:' . $coreLabelsSource . 'locallang_ttc.xml:palette.general;general';
+$GLOBALS['TCA']['tt_content']['types'][$pluginSignature]['showitem'] .= ', --palette--;LLL:EXT:' . $coreLabelsSource . 'locallang_ttc.xml:palette.headers;headers';
+$GLOBALS['TCA']['tt_content']['types'][$pluginSignature]['showitem'] .= ',--div--;LLL:EXT:sr_language_menu/Resources/Private/Language/locallang.xlf:settings.title, pi_flexform';
+$GLOBALS['TCA']['tt_content']['types'][$pluginSignature]['showitem'] .= ',--div--;LLL:EXT:' . $coreLabelsSource . 'locallang_ttc.xml:tabs.access, --palette--;LLL:EXT:' . $coreLabelsSource . 'locallang_ttc.xml:palette.visibility;visibility, --palette--;LLL:EXT:' . $coreLabelsSource . 'locallang_ttc.xml:palette.access;access';
+$GLOBALS['TCA']['tt_content']['types'][$pluginSignature]['showitem'] .= ', --div--;LLL:EXT:' . $coreLabelsSource . 'locallang_ttc.xml:tabs.appearance, --palette--;LLL:EXT:' . $coreLabelsSource . 'locallang_ttc.xml:palette.frames;frames';
