@@ -44,7 +44,7 @@ namespace SJBR\SrLanguageMenu\ViewHelpers\Widget;
  *		0 (the name of the language localized in the language of the current page),
  *		1 (the name of the language in the language itself),
  *		2 (the name of the language as set in the system language record in the TYPO3 backend),
- *		3 (the ISO language and, possibly, country codes of the language) 
+ *		3 (the ISO language and, possibly, country codes of the language)
  */
 class MenuViewHelper extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetViewHelper {
 
@@ -54,26 +54,32 @@ class MenuViewHelper extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetViewHelp
 	protected $controller;
 
 	/**
+	 * @var string
+	 */
+	protected $backupExtensionName;
+
+	/**
 	 * @param \SJBR\SrLanguageMenu\Controller\MenuController $controller
 	 * @return void
 	 */
 	public function injectController(\SJBR\SrLanguageMenu\Controller\MenuController $controller) {
 		$this->controller = $controller;
 	}
-	
+
 	public function initialize() {
+		$this->backupExtensionName = $this->controllerContext->getRequest()->getControllerExtensionName();
 		$this->controllerContext->getRequest()->setControllerExtensionName('SrLanguageMenu');
 	}
 
 	/**
 	 * @param string $languages
 	 * @param string $layout
-	 * @param integer $languageTitle	 
+	 * @param integer $languageTitle
 	 * @return string
 	 */
 	public function render($languages = NULL, $layout = NULL, $languageTitle = NULL) {
-		return $this->initiateSubRequest();
+		$result = $this->initiateSubRequest();
+		$this->controllerContext->getRequest()->setControllerExtensionName($this->backupExtensionName);
+		return $result;
 	}
 }
-
-?>
