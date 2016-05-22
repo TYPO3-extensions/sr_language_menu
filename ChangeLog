@@ -1,3 +1,8 @@
+2016-05-22  Stanislas Rolland  <typo3(arobas)sjbr.ca>
+
+	* Resolves #76096: Labels not working anymore after using the widget (Thanks to Makus Klein)
+	* Update version to 6.3.4	
+
 2016-03-10  Stanislas Rolland  <typo3(arobas)sjbr.ca>
 
 	* Resolves #74818: Remove references to sysext cms labels removed from TYPO3 CMS 7.6
