@@ -1,32 +1,33 @@
 <?php
 defined('TYPO3_MODE') or die();
 
-$tempColumns = Array (
-	'tx_srlanguagemenu_languages' => Array (		
-		'exclude' => 0,		
-		'label' => 'LLL:EXT:sr_language_menu/Resources/Private/Language/locallang.xlf:settings.languages',		
-		'config' => Array (
+$tempColumns = array(
+	'tx_srlanguagemenu_languages' => array(
+		'exclude' => 0,
+		'label' => 'LLL:EXT:sr_language_menu/Resources/Private/Language/locallang.xlf:settings.languages',
+		'config' => array(
 			'type' => 'group',
 			'internal_type' => 'db',
 			'allowed' => 'sys_language',
 			'size' => '5',
 			'maxitems' => 50,
 			'minitems' => 1,
-			'show_thumbs' => 1,
+			'show_thumbs' => 1
 		)
 	),
-	'tx_srlanguagemenu_type' => array(        
-		'exclude' => 0,        
-		'label' => 'LLL:EXT:sr_language_menu/Resources/Private/Language/locallang.xlf:settings.layout',        
+	'tx_srlanguagemenu_type' => array(
+		'exclude' => 0,
+		'label' => 'LLL:EXT:sr_language_menu/Resources/Private/Language/locallang.xlf:settings.layout',
 		'config' => array(
 			'type' => 'select',
+			'renderType' => 'selectSingle',
 			'items' => array(
 				array('LLL:EXT:sr_language_menu/Resources/Private/Language/locallang.xlf:settings.layout.I.0', '0'),
 				array('LLL:EXT:sr_language_menu/Resources/Private/Language/locallang.xlf:settings.layout.I.1', '1'),
-				array('LLL:EXT:sr_language_menu/Resources/Private/Language/locallang.xlf:settings.layout.I.2', '2'),
-			),
-		),
-	),
+				array('LLL:EXT:sr_language_menu/Resources/Private/Language/locallang.xlf:settings.layout.I.2', '2')
+			)
+		)
+	)
 );
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns('tt_content', $tempColumns);
 

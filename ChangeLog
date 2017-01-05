@@ -1,3 +1,7 @@
+2017-01-05  Stanislas Rolland  <typo3(arobas)sjbr.ca>
+
+	* Resolves #79176: Missing renderType on TCA select definition
+
 2016-05-22  Stanislas Rolland  <typo3(arobas)sjbr.ca>
 
 	* Resolves #76096: Labels not working anymore after using the widget (Thanks to Makus Klein)
