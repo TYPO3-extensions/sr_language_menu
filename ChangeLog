@@ -4,6 +4,7 @@
 	* Resolves #79188: Use registered icon in frontend
 	* Resolves #79189: Migrate extension icon to svg
 	* Resolves #76679: Wrong flag for chinese language
+	* Update version to 6.4.0
 
 2017-01-05  Stanislas Rolland  <typo3(arobas)sjbr.ca>
 
