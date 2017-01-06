@@ -11,7 +11,8 @@ if (TYPO3_MODE === 'BE') {
 		// A unique name of the plugin in UpperCamelCase
 		'LanguageMenu',
 		// A title shown in the backend dropdown field
-		'LLL:EXT:sr_language_menu/Resources/Private/Language/locallang.xlf:pi1_title'
-		//'Language selection menu'
+		'LLL:EXT:sr_language_menu/Resources/Private/Language/locallang.xlf:pi1_title',
+		// Icon
+		'tx-srlanguagemenu-language'
 	);
 }

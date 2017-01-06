@@ -1,6 +1,7 @@
 2017-01-05  Stanislas Rolland  <typo3(arobas)sjbr.ca>
 
 	* Resolves #79176: Missing renderType on TCA select definition
+	* Resolves #79178: Migrate to LTS 7 icon factory
 
 2016-05-22  Stanislas Rolland  <typo3(arobas)sjbr.ca>
 
