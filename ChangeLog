@@ -3,6 +3,7 @@
 	* Resolves #79187: Use TYPO3 8 DB API
 	* Resolves #79188: Use registered icon in frontend
 	* Resolves #79189: Migrate extension icon to svg
+	* Resolves #76679: Wrong flag for chinese language
 
 2017-01-05  Stanislas Rolland  <typo3(arobas)sjbr.ca>
 
