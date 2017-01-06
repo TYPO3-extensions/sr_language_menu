@@ -21,9 +21,9 @@ defined('TYPO3_MODE') or die();
 // Register icon
 $iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconRegistry::class);
 $iconRegistry->registerIcon(
-  'tx-srlanguagemenu-language',
-  \TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class,
-  ['source' => 'EXT:' . $_EXTKEY . '/Resources/Public/Images/language.png']
+	'tx-srlanguagemenu-language',
+	\TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
+	['source' => 'EXT:' . $_EXTKEY . '/Resources/Public/Images/language.svg']
 );
 
 if (TYPO3_MODE === 'BE') {
