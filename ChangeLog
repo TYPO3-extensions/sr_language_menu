@@ -1,6 +1,8 @@
 2017-01-06  Stanislas Rolland  <typo3(arobas)sjbr.ca>
 
 	* Resolves #79187: Use TYPO3 8 DB API
+	* Resolves #79188: Use registered icon in frontend
+	* Resolves #79189: Migrate extension icon to svg
 
 2017-01-05  Stanislas Rolland  <typo3(arobas)sjbr.ca>
 
