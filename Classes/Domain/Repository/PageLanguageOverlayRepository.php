@@ -1,9 +1,10 @@
 <?php
 namespace SJBR\SrLanguageMenu\Domain\Repository;
+
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013 Stanislas Rolland <typo3@sjbr.ca>
+ *  (c) 2013-2017 Stanislas Rolland <typo3@sjbr.ca>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -25,31 +26,41 @@ namespace SJBR\SrLanguageMenu\Domain\Repository;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use SJBR\SrLanguageMenu\Domain\Model\Page;
+use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
+use TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings;
+use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
+use TYPO3\CMS\Extbase\Persistence\Repository;
+
 /**
  * The page language overlay repository
  */
-class PageLanguageOverlayRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
+class PageLanguageOverlayRepository extends Repository
+{
 	/**
 	 * Initialize the repository for unrestricted access to page language overlays
 	 *
-	 * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
+	 * @param ObjectManagerInterface $objectManager
 	 * @return void
 	 */
-	public function __construct(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager) {
+	public function __construct(ObjectManagerInterface $objectManager)
+	{
 		parent::__construct($objectManager);
-		$querySettings = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Typo3QuerySettings');
-		$querySettings->setRespectStoragePage(FALSE);
-		$querySettings->setRespectSysLanguage(FALSE);
+		$querySettings = $this->objectManager->get(Typo3QuerySettings::class);
+		$querySettings->setRespectStoragePage(false);
+		$querySettings->setRespectSysLanguage(false);
 		$this->setDefaultQuerySettings($querySettings);
 	}
 
 	/**
-	 * 
 	 *
-	 * @param \SJBR\SrLanguageMenu\Domain\Model\Page $page
-	 * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface|array
-	 */	
-	public function findByPage(\SJBR\SrLanguageMenu\Domain\Model\Page $page) {
+	 *
+	 * @param Page $page
+	 * @return QueryResultInterface|array
+	 */
+	public function findByPage(Page $page)
+	{
 		$query = $this->createQuery();
 		$query->matching(
 			$query->equals('pid', $page->getUid())
@@ -57,4 +68,3 @@ class PageLanguageOverlayRepository extends \TYPO3\CMS\Extbase\Persistence\Repos
 		return $query->execute();
 	}
 }
-?>

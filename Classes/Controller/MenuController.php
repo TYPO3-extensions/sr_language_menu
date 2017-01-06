@@ -4,7 +4,7 @@ namespace SJBR\SrLanguageMenu\Controller;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013-2015 Stanislas Rolland <typo3(arobas)sjbr.ca>
+ *  (c) 2013-2017 Stanislas Rolland <typo3(arobas)sjbr.ca>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -33,9 +33,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
+use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Extbase\Utility\ArrayUtility;
 use TYPO3\CMS\Fluid\Core\Widget\WidgetRequest;
+use SJBR\SrLanguageMenu\Domain\Model\Page;
 use SJBR\SrLanguageMenu\Domain\Model\PageLanguageOverlay;
 use SJBR\SrLanguageMenu\Domain\Model\SystemLanguage;
 use SJBR\SrLanguageMenu\Utility\LocalizationUtility;
@@ -43,14 +45,14 @@ use SJBR\SrLanguageMenu\Utility\LocalizationUtility;
 /**
  * Controls the rendering of the language menu as a normal content element or as a Fluid widget
  */
-class MenuController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetController {
-
+class MenuController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetController
+{
 	/**
 	 * @var array
 	 */
 	protected $supportedRequestTypes = array(
-		'TYPO3\\CMS\\Extbase\\Mvc\\Request',
-		'TYPO3\\CMS\\Fluid\\Core\\Widget\\WidgetRequest'
+		Request::class,
+		WidgetRequest::class
 	);
 
 	/**
@@ -138,7 +140,7 @@ class MenuController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetControll
 			}
 		}
 
-		$defaultSystemLanguage = $this->objectManager->get('SJBR\\SrLanguageMenu\\Domain\\Model\\SystemLanguage');
+		$defaultSystemLanguage = $this->objectManager->get(SystemLanguage::class);
 		$defaultSystemLanguage->setIsoLanguage($defaultIsoLanguage);
 		if (trim($this->settings['defaultLanguageTitle'])) {
 			$defaultLanguageTitle = trim($this->settings['defaultLanguageTitle']);
@@ -153,7 +155,7 @@ class MenuController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetControll
 
 		// Beware of inaccessible page
 		$page = $this->pageRepository->findByUid($this->getFrontendObject()->id);
-		if ($page instanceof \SJBR\SrLanguageMenu\Domain\Model\Page) {
+		if ($page instanceof Page) {
 			// If "Hide default translation of page" is not set on the page...
 			if (!($page->getL18nCfg()&1)) {
 				// Add default language

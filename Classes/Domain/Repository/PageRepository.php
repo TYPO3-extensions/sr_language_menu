@@ -1,9 +1,10 @@
 <?php
 namespace SJBR\SrLanguageMenu\Domain\Repository;
+
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013 Stanislas Rolland <typo3@sjbr.ca>
+ *  (c) 2013-2017 Stanislas Rolland <typo3@sjbr.ca>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -25,9 +26,10 @@ namespace SJBR\SrLanguageMenu\Domain\Repository;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use TYPO3\CMS\Extbase\Persistence\Repository;
+
 /**
  * The page repository
  */
-class PageRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
-}
-?>
+class PageRepository extends Repository {}

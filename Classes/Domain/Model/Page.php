@@ -1,10 +1,11 @@
 <?php
 namespace SJBR\SrLanguageMenu\Domain\Model;
+
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013-2014 Stanislas Rolland <typo3(arobas)sjbr.ca>
- *  
+ *  (c) 2013-2017 Stanislas Rolland <typo3(arobas)sjbr.ca>
+ *
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -23,11 +24,14 @@ namespace SJBR\SrLanguageMenu\Domain\Model;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+
 /**
  * The Page model
  */
-class Page extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
-
+class Page extends AbstractEntity
+{
 	/**
 	 * l18n_cfg ("Hide default translation of page" and "Hide page if no translation for current language exists")
 	 *
@@ -40,7 +44,8 @@ class Page extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 *
 	 * @return integer
 	 */
-	public function getL18nCfg() {
+	public function getL18nCfg()
+	{
 		return $this->l18nCfg;
 	}
 }

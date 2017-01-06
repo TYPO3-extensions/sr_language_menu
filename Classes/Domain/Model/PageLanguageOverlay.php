@@ -1,10 +1,11 @@
 <?php
 namespace SJBR\SrLanguageMenu\Domain\Model;
+
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013-2014 Stanislas Rolland <typo3(arobas)sjbr.ca>
- *  
+ *  (c) 2013-2017 Stanislas Rolland <typo3(arobas)sjbr.ca>
+ *
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -23,11 +24,16 @@ namespace SJBR\SrLanguageMenu\Domain\Model;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use SJBR\SrLanguageMenu\Domain\Model\Page;
+use SJBR\SrLanguageMenu\Domain\Model\SystemLanguage;
+use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+
 /**
  * The Page Language Overlay model
  */
-class PageLanguageOverlay extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
-	
+class PageLanguageOverlay extends AbstractEntity
+{
 	/**
 	 * Page
 	 *
@@ -45,29 +51,32 @@ class PageLanguageOverlay extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 	/**
 	 * Sets the page
 	 *
-	 * @param \SJBR\SrLanguageMenu\Domain\Model\Page $page
+	 * @param Page $page
 	 * @return void
 	 */
-	public function setPage(\SJBR\SrLanguageMenu\Domain\Model\Page $page) {
+	public function setPage(Page $page)
+	{
 		$this->page = $page;
-	}	
+	}
 
 	/**
 	 * Returns the page
 	 *
-	 * @return \SJBR\SrLanguageMenu\Domain\Model\Page
+	 * @return Page
 	 */
-	public function getPage() {
+	public function getPage()
+	{
 		return $this->page;
 	}
 
 	/**
 	 * Sets the language
 	 *
-	 * @param \SJBR\SrLanguageMenu\Domain\Model\SystemLanguage $language
+	 * @param SystemLanguage $language
 	 * @return void
 	 */
-	public function setLanguage(\SJBR\SrLanguageMenu\Domain\Model\SystemLanguage $language) {
+	public function setLanguage(SystemLanguage $language)
+	{
 		$this->language = $language;
 	}
 
@@ -76,8 +85,8 @@ class PageLanguageOverlay extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 	 *
 	 * @return SystemLanguage
 	 */
-	public function getLanguage() {
+	public function getLanguage()
+	{
 		return $this->language;
 	}
 }
-?>
