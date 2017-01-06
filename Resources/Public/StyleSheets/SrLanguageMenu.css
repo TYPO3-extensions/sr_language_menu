@@ -66,7 +66,8 @@
 .tx-srlanguagemenu fieldset label {
 	display: none;
 }
-.tx-srlanguagemenu fieldset img.tx-srlanguagemenu-language-icon {
+.tx-srlanguagemenu fieldset span.icon-markup {
+	display: inline-block;
 	margin-right: 3px;
 	vertical-align: middle;
 }

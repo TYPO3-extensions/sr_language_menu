@@ -18,14 +18,15 @@ defined('TYPO3_MODE') or die();
 	\TYPO3\CMS\Extbase\Utility\ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT
 );
 
+// Register icon
+$iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconRegistry::class);
+$iconRegistry->registerIcon(
+  'tx-srlanguagemenu-language',
+  \TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class,
+  ['source' => 'EXT:' . $_EXTKEY . '/Resources/Public/Images/language.png']
+);
+
 if (TYPO3_MODE === 'BE') {
 	// Include page TS configuration for new element wizard
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:' . $_EXTKEY . '/Configuration/PageTS/modWizards.txt">');
-	// Register icon
-	$iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconRegistry::class);
-	$iconRegistry->registerIcon(
-	  'tx-srlanguagemenu-language',
-	  \TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class,
-	  ['source' => 'EXT:' . $_EXTKEY . '/Resources/Public/Images/language.png']
-	);
 }
