@@ -2,6 +2,7 @@
 
 	* Resolves #79176: Missing renderType on TCA select definition
 	* Resolves #79178: Migrate to LTS 7 icon factory
+	* Resolves #78340: Compatibility with TYPO3 version 8.x and require TYPO3 7 LTS
 
 2016-05-22  Stanislas Rolland  <typo3(arobas)sjbr.ca>
 
