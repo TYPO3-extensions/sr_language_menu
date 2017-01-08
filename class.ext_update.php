@@ -126,7 +126,7 @@ class ext_update
 				$queryBuilder
 				   ->update('tt_content')
 				   ->where(
-					  $queryBuilder->expr()->eq('uid', (int)$row['uid'])
+					  $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter((int)$row['uid'], \PDO::PARAM_INT))
 				   )
 				   ->set('CType', $update['CType'])
 				   ->set('list_type', $update['list_type'])
@@ -173,7 +173,7 @@ class ext_update
 					$queryBuilder
 					   ->update('sys_template')
 					   ->where(
-						  $queryBuilder->expr()->eq('uid', (int)$row['uid'])
+						  $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter((int)$row['uid'], \PDO::PARAM_INT))
 					   )
 					   ->set('constants', $update['constants'])
 					   ->set('config', $update['config'])
