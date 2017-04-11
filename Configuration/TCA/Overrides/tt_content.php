@@ -11,8 +11,7 @@ $tempColumns = array(
 			'allowed' => 'sys_language',
 			'size' => '5',
 			'maxitems' => 50,
-			'minitems' => 1,
-			'show_thumbs' => 1
+			'minitems' => 1
 		)
 	),
 	'tx_srlanguagemenu_type' => array(
