@@ -7,7 +7,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'title' => 'Language Selection',
 	'description' => 'A plugin to display a list of languages to select from. Clicking on a language links to the corresponding version of the page.',
 	'category' => 'plugin',
-	'version' => '6.4.1',
+	'version' => '6.4.2',
 	'state' => 'stable',
 	'uploadfolder' => 0,
 	'createDirs' => '',
@@ -17,7 +17,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'author_company' => 'SJBR',
 	'constraints' => array(
 		'depends' => array(
-			'typo3' => '7.6.0-8.99.99',
+			'typo3' => '7.6.0-8.7.99',
 			'static_info_tables' => '6.4.2-6.4.99'
 		),
 		'conflicts' => array(),
