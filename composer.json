@@ -1,7 +1,7 @@
 {
   "name": "sjbr/sr-language-menu",
   "description": "A plugin to display a list of languages to select from. Clicking on a language links to the corresponding version of the page.",
-  "version": "6.4.2",
+  "version": "6.4.3",
   "type": "typo3-cms-extension",
   "license": "GPL-2.0+",
   "authors": [
@@ -15,13 +15,12 @@
 	"issues": "https://forge.typo3.org/projects/extension-sr_language_menu/issues"
   },
   "replace": {
-    "sr_language_menu": "*",
-    "sjbr/sr_language_menu": "*",
+    "sr_language_menu": "self.version",
 	"typo3-ter/sr-language-menu": "self.version"
   },
   "require": {
   	"typo3/cms-core": ">=7.6,<9.0",
-  	"sjbr/static-info-tables": ">=6.4.2,<6.5"
+  	"sjbr/static-info-tables": ">=6.4.2,<6.6"
   },
   "autoload": {
     "psr-4": {

@@ -1,6 +1,7 @@
 2018-02-10  Stanislas Rolland  <typo3(arobas)sjbr.ca>
 
 	* Resolves #83562: Use standard SQL table definition
+	* Update version to 6.4.3
 
 2017-04-11  Stanislas Rolland  <typo3(arobas)sjbr.ca>
 
