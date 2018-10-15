@@ -4,7 +4,7 @@ namespace SJBR\SrLanguageMenu\Domain\Model;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013-2017 Stanislas Rolland <typo3(arobas)sjbr.ca>
+ *  (c) 2013-2018 Stanislas Rolland <typo3(arobas)sjbr.ca>
  *
  *  All rights reserved
  *
@@ -33,11 +33,56 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 class Page extends AbstractEntity
 {
 	/**
+	 * Parent
+	 *
+	 * @var integer
+	 */
+	protected $parent;	
+
+	/**
+	 * Language
+	 *
+	 * @var \SJBR\SrLanguageMenu\Domain\Model\SystemLanguage
+	 */
+	protected $language;
+	
+	/**
 	 * l18n_cfg ("Hide default translation of page" and "Hide page if no translation for current language exists")
 	 *
 	 * @var integer
 	 */
 	protected $l18nCfg = 0;
+
+	/**
+	 * Returns the parent
+	 *
+	 * @return integer
+	 */
+	public function getParent()
+	{
+		return $this->parent;
+	}
+
+	/**
+	 * Sets the language
+	 *
+	 * @param \SJBR\SrLanguageMenu\Domain\Model\SystemLanguage $language
+	 * @return void
+	 */
+	public function setLanguage(\SJBR\SrLanguageMenu\Domain\Model\SystemLanguage $language)
+	{
+		$this->language = $language;
+	}
+
+	/**
+	 * Returns the language
+	 *
+	 * @return \SJBR\SrLanguageMenu\Domain\Model\SystemLanguage
+	 */
+	public function getLanguage()
+	{
+		return $this->language;
+	}
 
 	/**
 	 * Returns the l18nCfg value

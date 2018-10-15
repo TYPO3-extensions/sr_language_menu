@@ -4,7 +4,7 @@ namespace SJBR\SrLanguageMenu\Domain\Repository;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013-2017 Stanislas Rolland <typo3@sjbr.ca>
+ *  (c) 2013-2018 Stanislas Rolland <typo3@sjbr.ca>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -27,9 +27,27 @@ namespace SJBR\SrLanguageMenu\Domain\Repository;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
+use TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings;
 use TYPO3\CMS\Extbase\Persistence\Repository;
 
 /**
  * The page repository
  */
-class PageRepository extends Repository {}
+class PageRepository extends Repository
+{
+	/**
+	 * Initialize the repository for unrestricted access to page
+	 *
+	 * @param ObjectManagerInterface $objectManager
+	 * @return void
+	 */
+	public function __construct(ObjectManagerInterface $objectManager)
+	{
+		parent::__construct($objectManager);
+		$querySettings = $this->objectManager->get(Typo3QuerySettings::class);
+		$querySettings->setRespectStoragePage(false);
+		$querySettings->setRespectSysLanguage(false);
+		$this->setDefaultQuerySettings($querySettings);
+	}
+}

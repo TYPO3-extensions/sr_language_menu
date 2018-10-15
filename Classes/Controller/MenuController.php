@@ -4,7 +4,7 @@ namespace SJBR\SrLanguageMenu\Controller;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013-2017 Stanislas Rolland <typo3(arobas)sjbr.ca>
+ *  (c) 2013-2018 Stanislas Rolland <typo3(arobas)sjbr.ca>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -27,20 +27,23 @@ namespace SJBR\SrLanguageMenu\Controller;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use TYPO3\CMS\Core\Utility\ClientUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Extbase\Utility\ArrayUtility;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Fluid\Core\Widget\WidgetRequest;
+use TYPO3\CMS\Frontend\Resource\FilePathSanitizer;
 use SJBR\SrLanguageMenu\Domain\Model\Page;
-use SJBR\SrLanguageMenu\Domain\Model\PageLanguageOverlay;
 use SJBR\SrLanguageMenu\Domain\Model\SystemLanguage;
-use SJBR\SrLanguageMenu\Utility\LocalizationUtility;
+use SJBR\SrLanguageMenu\Domain\Repository\PageRepository;
+use SJBR\SrLanguageMenu\Domain\Repository\SystemLanguageRepository;
+use SJBR\StaticInfoTables\Domain\Repository\LanguageRepository;
 
 /**
  * Controls the rendering of the language menu as a normal content element or as a Fluid widget
@@ -66,28 +69,52 @@ class MenuController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetControll
 	protected $extensionKey = 'sr_language_menu';
 
 	/**
-	 * @var \SJBR\SrLanguageMenu\Domain\Repository\SystemLanguageRepository
-	 * @inject
+	 * @var SystemLanguageRepository
 	 */
 	protected $systemLanguageRepository;
 
+ 	/**
+	 * Dependency injection of the System Language Repository
+ 	 *
+	 * @param SystemLanguageRepository $systemLanguageRepository
+ 	 * @return void
+	 */
+	public function injectSystemLanguageRepository(SystemLanguageRepository $systemLanguageRepository)
+	{
+		$this->systemLanguageRepository = $systemLanguageRepository;
+	}
+
 	/**
-	 * @var \SJBR\StaticInfoTables\Domain\Repository\LanguageRepository
-	 * @inject
+	 * @var LanguageRepository
 	 */
 	protected $languageRepository;
 
+ 	/**
+	 * Dependency injection of the Language Repository
+ 	 *
+	 * @param LanguageRepository $languageRepository
+ 	 * @return void
+	 */
+	public function injectLanguageRepository(LanguageRepository $languageRepository)
+	{
+		$this->languageRepository = $languageRepository;
+	}
+
 	/**
-	 * @var \SJBR\SrLanguageMenu\Domain\Repository\PageRepository
-	 * @inject
+	 * @var PageRepository
 	 */
 	protected $pageRepository;
 
-	/**
-	 * @var \SJBR\SrLanguageMenu\Domain\Repository\PageLanguageOverlayRepository
-	 * @inject
+ 	/**
+	 * Dependency injection of the Page Repository
+ 	 *
+	 * @param PageRepository $pageRepository
+ 	 * @return void
 	 */
-	protected $pageLanguageOverlayRepository;
+	public function injectPageRepository(PageRepository $pageRepository)
+	{
+		$this->pageRepository = $pageRepository;
+	}
 
 	/**
 	 * Initialize the action when rendering as a widget
@@ -161,8 +188,7 @@ class MenuController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetControll
 				// Add default language
 				$availableOverlays[] = 0;
 			}
-			/** @var PageLanguageOverlay[] $pageLanguageOverlays */
-			$pageLanguageOverlays = $this->pageLanguageOverlayRepository->findByPage($page)->toArray();
+			$pageLanguageOverlays = $this->pageRepository->findByParent($page->getUid())->toArray();
 			foreach ($pageLanguageOverlays as $pageLanguageOverlay) {
 				// The overlay may refer to a deleted Website language
 				if (is_object($pageLanguageOverlay->getLanguage())) {
@@ -177,14 +203,14 @@ class MenuController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetControll
 		// Build language options
 		$options = array();
 		// If $this->settings['languages'] is not empty, the languages will be sorted in the order it specifies
-		$languages = GeneralUtility::trimExplode(',', $this->settings['languages'], TRUE);
+		$languages = GeneralUtility::trimExplode(',', $this->settings['languages'], true);
 		if (!empty($languages) && !in_array(0, $languages)) {
 			array_unshift($languages, 0);
 		}
 		$index = 0;
 		foreach ($systemLanguages as $systemLanguage) {
 			$option = array(
-				'uid' => $systemLanguage->getUid() ? $systemLanguage->getUid() : 0,
+				'uid' => $systemLanguage->getUid() ?: 0,
 				'isoCodeA2' => is_object($systemLanguage->getIsoLanguage()) ? $systemLanguage->getIsoLanguage()->getIsoCodeA2() : '',
 				'countryIsoCodeA2' => is_object($systemLanguage->getIsoLanguage()) ? $systemLanguage->getIsoLanguage()->getCountryIsoCodeA2(): ''
 			);
@@ -219,11 +245,7 @@ class MenuController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetControll
 			$option['isAvailable'] = in_array($option['uid'], $availableOverlays);
 			$option['notAvailableTitle'] = $option['title'];
 			if (!$option['isAvailable']) {
-				// Switch localization target language
-				LocalizationUtility::setAlternateLanguage($option['combinedIsoCode'], $this->extensionName);
-				$option['notAvailableTitle'] = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('translationNotAvailable', $this->extensionName, array($systemLanguage->getIsoLanguage() ? $systemLanguage->getIsoLanguage()->getLocalName() : $option['title']));
-				// Restore configured localization target language
-				LocalizationUtility::restoreConfiguredLanguage($this->extensionName);
+				$option['notAvailableTitle'] = LocalizationUtility::translate('translationNotAvailable', $this->extensionName, array($systemLanguage->getIsoLanguage() ? $systemLanguage->getIsoLanguage()->getLocalName() : $option['title']), $option['combinedIsoCode']);
 			}
 
 			// Add configured external url for missing overlay record
@@ -321,10 +343,10 @@ class MenuController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetControll
 		}
 
 		// Flags directory
-		$this->settings['flagsDirectory'] = ExtensionManagementUtility::siteRelPath($this->extensionKey) . 'Resources/Public/Images/Flags/';
+		$this->settings['flagsDirectory'] = PathUtility::stripPathSitePrefix(ExtensionManagementUtility::extPath($this->extensionKey)) . 'Resources/Public/Images/Flags/';
 		$this->settings['flagsExtension'] = 'png';
 		if ($this->settings['englishFlagFile']) {
-			$this->settings['flagsDirectory'] = dirname($this->getFrontendObject()->tmpl->getFileName(trim($this->settings['englishFlagFile']))) . '/';
+			$this->settings['flagsDirectory'] = dirname(GeneralUtility::makeInstance(FilePathSanitizer::class)->sanitize(trim($this->settings['englishFlagFile']))) . '/';
 			$this->settings['flagsExtension'] = pathinfo(trim($this->settings['englishFlagFile']), PATHINFO_EXTENSION);		
 		}
 
@@ -355,8 +377,12 @@ class MenuController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetControll
 		}
 
 		// Identify IE > 9
-		$browserInfo = ClientUtility::getBrowserInfo(GeneralUtility::getIndpEnv('HTTP_USER_AGENT'));
-		$this->settings['isIeGreaterThan9'] =  $browserInfo['browser'] == 'msie' && intval($browserInfo['version']) > 9 ? 1 : 0;
+		$browserInfo = GeneralUtility::getIndpEnv('HTTP_USER_AGENT');
+		$browserIsIE = strpos($browserInfo, 'MSIE');
+		if ($browserIsIE !== false) {
+			$browserVersion = intval(substr($browserInfo, $browserIsIE+5, 1));
+        }
+		$this->settings['isIeGreaterThan9'] =  $browserIsIE !== false && $browserVersion < 2 ? 1 : 0;
 	}
 
 	/**

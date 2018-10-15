@@ -43,7 +43,6 @@
 								<allowed>sys_language</allowed>
 								<size>5</size>
 								<maxitems>50</maxitems>
-								<show_thumbs>1</show_thumbs>
 							</config>
 						</TCEforms>
 					</settings.languages>

@@ -87,36 +87,3 @@ plugin.tx_srlanguagemenu {
   		}
   	}
 }
-
-config.tx_extbase {
-	persistence {
-		classes {
-			SJBR\SrLanguageMenu\Domain\Model\Page {
-				mapping {
-					tableName = pages
-					columns {
-						l18n_cfg.mapOnProperty = l18nCfg
-					}
-				}
-			}
-			SJBR\SrLanguageMenu\Domain\Model\PageLanguageOverlay {
-				mapping {
-					tableName = pages_language_overlay
-					columns {
-						pid.mapOnProperty = page
-						sys_language_uid.mapOnProperty = language
-					}
-				}
-			}
-			SJBR\SrLanguageMenu\Domain\Model\SystemLanguage {
-				mapping {
-					tableName = sys_language
-					columns {
-						title.mapOnProperty = title
-						static_lang_isocode.mapOnProperty = isoLanguage
-					}
-				}
-			}
-		}
-	}
-}

@@ -4,7 +4,7 @@ namespace SJBR\SrLanguageMenu\ViewHelpers\Widget;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013-2017 Stanislas Rolland <typo3@sjbr.ca>
+ *  (c) 2013-2018 Stanislas Rolland <typo3@sjbr.ca>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -72,10 +72,12 @@ class MenuViewHelper extends AbstractWidgetViewHelper
 		$this->controller = $controller;
 	}
 
-	public function initialize()
+	public function initializeArguments()
 	{
-		$this->backupExtensionName = $this->controllerContext->getRequest()->getControllerExtensionName();
-		$this->controllerContext->getRequest()->setControllerExtensionName('SrLanguageMenu');
+		parent::initializeArguments();
+		$this->registerArgument('languages', 'string', 'A list of site languages uids');
+		$this->registerArgument('layout', 'string', 'The requested layout: Flags, Select or Links');
+		$this->registerArgument('languageTitle', 'integer', 'The type of language title to use');
 	}
 
 	/**
@@ -87,7 +89,6 @@ class MenuViewHelper extends AbstractWidgetViewHelper
 	public function render($languages = null, $layout = null, $languageTitle = null)
 	{
 		$result = $this->initiateSubRequest();
-		$this->controllerContext->getRequest()->setControllerExtensionName($this->backupExtensionName);
 		return $result;
 	}
 }
