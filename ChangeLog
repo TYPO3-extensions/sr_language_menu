@@ -1,6 +1,7 @@
 2018-10-18  Stanislas Rolland  <typo3(arobas)sjbr.ca>
 
 	* Resolves #86692: Use language aspect of frontend context
+	* Resolves #86693: Incorrect keywords format for composer
 
 2018-10-15  Stanislas Rolland  <typo3(arobas)sjbr.ca>
 
