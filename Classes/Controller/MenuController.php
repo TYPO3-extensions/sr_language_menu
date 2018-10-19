@@ -1,7 +1,7 @@
 <?php
 namespace SJBR\SrLanguageMenu\Controller;
 
-/***************************************************************
+/*
  *  Copyright notice
  *
  *  (c) 2013-2018 Stanislas Rolland <typo3(arobas)sjbr.ca>
@@ -25,8 +25,9 @@ namespace SJBR\SrLanguageMenu\Controller;
  *  GNU General Public License for more details.
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+ */
 
+use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -201,7 +202,9 @@ class MenuController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetControll
 		$this->settings['showMenu'] = !$this->settings['hideIfNoAltLanguages'] || (count($availableOverlays) > 1);
 
 		// Build language options
-		$options = array();
+		$options = [];
+		$context = GeneralUtility::makeInstance(Context::class);
+		$languageAspect = $context->getAspect('language');
 		// If $this->settings['languages'] is not empty, the languages will be sorted in the order it specifies
 		$languages = GeneralUtility::trimExplode(',', $this->settings['languages'], true);
 		if (!empty($languages) && !in_array(0, $languages)) {
@@ -256,23 +259,23 @@ class MenuController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetControll
 					}
 				} else {
 					$option['externalUrl'] = is_array($this->settings['useExternalUrl'][$option['combinedIsoCode']]) ? $this->settings['useExternalUrl'][$option['combinedIsoCode']]['_typoScriptNodeValue'] : $this->settings['useExternalUrl'][$option['combinedIsoCode']];
-					$option['isAvailable'] = TRUE;
+					$option['isAvailable'] = true;
 				}
 			}
 
 			// Set current language indicator
-			$option['isCurrent'] = ($option['uid'] == $this->getFrontendObject()->config['config']['sys_language_uid']);
+			$option['isCurrent'] = ($option['uid'] == $languageAspect->getId());
 
 			// If $this->settings['languages'] is not empty, the languages will be sorted in the order it specifies
 			$key = array_search($option['uid'], $languages);
-			$key = ($key !== FALSE) ? $key : count($languages) + $index++;
+			$key = ($key !== false) ? $key : count($languages) + $index++;
 			$options[$key] = $option;
 		}
 		ksort($options);
 
 		// Show current language first, if configured
 		if ($this->settings['showCurrentFirst']) {
-			$key = array_search($this->getFrontendObject()->config['config']['sys_language_uid'], $languages);
+			$key = array_search($languageAspect->getId(), $languages);
 			if ($key) {
 				$option = $options[$key];
 				unset($options[$key]);
@@ -310,7 +313,7 @@ class MenuController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetControll
 			$this->settings['languages'] = strval($this->settings['languagesUidsList']);
 		} else {
 			// The list was set in the flexform
-			$languagesArray = GeneralUtility::trimExplode(',', $this->settings['languages'], TRUE);
+			$languagesArray = GeneralUtility::trimExplode(',', $this->settings['languages'], true);
 			$positionOfDefaultLanguage = min(intval($this->settings['positionOfDefaultLanguage']), count($languagesArray));
 			array_splice($languagesArray, $positionOfDefaultLanguage, 0, array('0'));
 			$this->settings['languages'] = implode(',', $languagesArray);
