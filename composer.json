@@ -1,7 +1,7 @@
 {
   "name": "sjbr/sr-language-menu",
   "description": "A TYPO3 plugin to display a list of languages to select from. Clicking on a language links to the corresponding version of the page.",
-  "version": "6.5.1",
+  "version": "6.5.2",
   "type": "typo3-cms-extension",
   "license": "GPL-2.0+",
   "keywords": [

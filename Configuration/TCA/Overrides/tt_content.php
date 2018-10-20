@@ -40,3 +40,19 @@ $GLOBALS['TCA']['tt_content']['types'][$pluginSignature]['showitem'] .= ', --pal
 $GLOBALS['TCA']['tt_content']['types'][$pluginSignature]['showitem'] .= ',--div--;LLL:EXT:sr_language_menu/Resources/Private/Language/locallang.xlf:settings.title, pi_flexform';
 $GLOBALS['TCA']['tt_content']['types'][$pluginSignature]['showitem'] .= ',--div--;LLL:EXT:' . $coreLabelsSource . 'locallang_ttc.xml:tabs.access, --palette--;LLL:EXT:' . $coreLabelsSource . 'locallang_ttc.xml:palette.visibility;visibility, --palette--;LLL:EXT:' . $coreLabelsSource . 'locallang_ttc.xml:palette.access;access';
 $GLOBALS['TCA']['tt_content']['types'][$pluginSignature]['showitem'] .= ', --div--;LLL:EXT:' . $coreLabelsSource . 'locallang_ttc.xml:tabs.appearance, --palette--;LLL:EXT:' . $coreLabelsSource . 'locallang_ttc.xml:palette.frames;frames';
+
+if (TYPO3_MODE === 'BE') {
+	/**
+	 * Registers the plugin to be listed in the Backend
+	 */
+	\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
+		// The extension name (in UpperCamelCase) or the extension key (in lower_underscore)
+		'SJBR.sr_language_menu',
+		// A unique name of the plugin in UpperCamelCase
+		'LanguageMenu',
+		// A title shown in the backend dropdown field
+		'LLL:EXT:sr_language_menu/Resources/Private/Language/locallang.xlf:pi1_title',
+		// Icon
+		'tx-srlanguagemenu-language'
+	);
+}
