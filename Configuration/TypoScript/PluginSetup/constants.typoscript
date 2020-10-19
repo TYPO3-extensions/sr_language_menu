@@ -3,15 +3,6 @@ plugin.tx_srlanguagemenu {
     # cat=plugin.tx_srlanguagemenu//05; type=options[LLL:EXT:sr_language_menu/Resources/Private/Language/locallang.xlf:settings.languageTitle.I.0=0,LLL:EXT:sr_language_menu/Resources/Private/Language/locallang.xlf:settings.languageTitle.I.1=1,LLL:EXT:sr_language_menu/Resources/Private/Language/locallang.xlf:settings.languageTitle.I.2=2,LLL:EXT:sr_language_menu/Resources/Private/Language/locallang.xlf:settings.languageTitle.I.3=3]; label= LLL:EXT:sr_language_menu/Resources/Private/Language/locallang.xlf:settings.languageTitle.constants
 	languageTitle = 0
 
-    # cat=plugin.tx_srlanguagemenu/enable/01; type=boolean; label= Use the Web site language title: DEPRECATED - Use property languageTitle instead.
-	useSysLanguageTitle = 0
-
-    # cat=plugin.tx_srlanguagemenu/enable/02; type=boolean; label= Use the language's self name: DEPRECATED - Use property languageTitle instead.
-	useSelfLanguageTitle = 1
-
-    # cat=plugin.tx_srlanguagemenu/enable/03; type=boolean; label= Use the ISO language and country codes: DEPRECATED - Use property languageTitle instead.
-	useIsoLanguageCountryCode = 0
-
     # cat=plugin.tx_srlanguagemenu//01; type=string; label= Language ISO-2 code of default site language: Language ISO-2 code of site language when sys_language_uid = 0.
 	defaultLanguageISOCode = EN
 

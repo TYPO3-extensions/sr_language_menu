@@ -4,7 +4,7 @@ namespace SJBR\SrLanguageMenu\Controller;
 /*
  *  Copyright notice
  *
- *  (c) 2013-2018 Stanislas Rolland <typo3(arobas)sjbr.ca>
+ *  (c) 2013-2020 Stanislas Rolland <typo32020(arobas)sjbr.ca>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -38,6 +38,7 @@ use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Extbase\Utility\ArrayUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+use TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetController;
 use TYPO3\CMS\Fluid\Core\Widget\WidgetRequest;
 use TYPO3\CMS\Frontend\Resource\FilePathSanitizer;
 use SJBR\SrLanguageMenu\Domain\Model\Page;
@@ -49,15 +50,15 @@ use SJBR\StaticInfoTables\Domain\Repository\LanguageRepository;
 /**
  * Controls the rendering of the language menu as a normal content element or as a Fluid widget
  */
-class MenuController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetController
+class MenuController extends AbstractWidgetController
 {
 	/**
 	 * @var array
 	 */
-	protected $supportedRequestTypes = array(
+	protected $supportedRequestTypes = [
 		Request::class,
 		WidgetRequest::class
-	);
+	];
 
 	/**
 	 * @var string Name of the extension this controller belongs to
@@ -121,7 +122,8 @@ class MenuController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetControll
 	 * Initialize the action when rendering as a widget
 	 * @return void
 	 */
-	public function initializeIndexAction() {
+	public function initializeIndexAction()
+	{
 		if (is_array($this->widgetConfiguration)) {
 			$this->settings = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS, $this->extensionName);
 			if (isset($this->widgetConfiguration['languages'])) {
@@ -141,8 +143,8 @@ class MenuController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetControll
 	 *
 	 * @return string empty string
 	 */
-	public function indexAction() {
-
+	public function indexAction()
+	{
 		// Something is wrong: in the select box view case, the get parameters of the form action are never received...
 		$variables = GeneralUtility::_POST('tx_srlanguagemenu_languagemenu');
 		if ($variables['action'] === 'redirect' && $variables['uri']) {
@@ -294,7 +296,8 @@ class MenuController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetControll
 	 * @param string $uri: uri to redirect to
 	 * @return string empty string
 	 */
-	public function redirectAction($uri) {
+	public function redirectAction($uri)
+	{
 		try {
 			$this->redirectToUri($uri);
 		} catch (StopActionException $e) {}
@@ -306,7 +309,8 @@ class MenuController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetControll
 	 * @return void
 	 * @api
 	 */
-	protected function processSettings() {
+	protected function processSettings()
+	{
 		// Set the list of language uid's
 		if (!$this->settings['languages']) {
 			// Take the list from TypoScript, if any
@@ -317,19 +321,6 @@ class MenuController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetControll
 			$positionOfDefaultLanguage = min(intval($this->settings['positionOfDefaultLanguage']), count($languagesArray));
 			array_splice($languagesArray, $positionOfDefaultLanguage, 0, array('0'));
 			$this->settings['languages'] = implode(',', $languagesArray);
-		}
-
-		// Backward compatibility settings for language labels
-		if (!isset($this->settings['languageTitle']) || !in_array($this->settings['languageTitle'], array(0, 1, 2, 3))) {
-			if ($this->settings['useSysLanguageTitle']) {
-				$this->settings['languageTitle'] = 2;
-			} else if ($this->settings['useIsoLanguageCountryCode']) {
-				$this->settings['languageTitle'] = 3;
-			} else if ($this->settings['useSelfLanguageTitle']) {
-				$this->settings['languageTitle'] = 1;
-			} else {
-				$this->settings['languageTitle'] = 0;
-			}
 		}
 
 		// Map numeric layout to keyword
@@ -396,7 +387,8 @@ class MenuController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetControll
 	 * @return void
 	 * @api
 	 */
-	public function processRequest(\TYPO3\CMS\Extbase\Mvc\RequestInterface $request, \TYPO3\CMS\Extbase\Mvc\ResponseInterface $response) {
+	public function processRequest(\TYPO3\CMS\Extbase\Mvc\RequestInterface $request, \TYPO3\CMS\Extbase\Mvc\ResponseInterface $response)
+	{
 		if ($request instanceof WidgetRequest) {
 			$this->widgetConfiguration = $request->getWidgetContext()->getWidgetConfiguration();
 		}
@@ -411,7 +403,8 @@ class MenuController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetControll
 	 * @return void
 	 * @see \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetController in TYPO3 CMS 7
 	 */
-	protected function setViewConfiguration(ViewInterface $view) {
+	protected function setViewConfiguration(ViewInterface $view)
+	{
 		if ($this->request instanceof WidgetRequest) {
 			$extbaseFrameworkConfiguration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK, $this->extensionName);
 			$widgetViewHelperClassName = $this->request->getWidgetContext()->getWidgetViewHelperClassName();
@@ -432,7 +425,8 @@ class MenuController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetControll
 	 *
 	 * @return \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
 	 */
-	protected function getFrontendObject() {
+	protected function getFrontendObject()
+	{
 		return $GLOBALS['TSFE'];
 	}
 }

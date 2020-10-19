@@ -1,9 +1,0 @@
-mod.wizards.newContentElement.wizardItems.special.elements.srlanguagemenu_languagemenu {
-	iconIdentifier = tx-srlanguagemenu-language
-	title = LLL:EXT:sr_language_menu/Resources/Private/Language/locallang.xlf:pi1_title
-	description = LLL:EXT:sr_language_menu/Resources/Private/Language/locallang.xlf:pi1_plus_wiz_description
-	tt_content_defValues {
-		CType = srlanguagemenu_languagemenu
-	}
-}
-mod.wizards.newContentElement.wizardItems.special.show := addToList(srlanguagemenu_languagemenu)
