@@ -1,6 +1,7 @@
 2020-10-17  Stanislas Rolland  <typo32020(arobas)sjbr.ca>
 
 	* Resolves #87928: Language switch and addQueryString for routing fails
+	* Resolves #88401: Site management language option "visible in frontend" not honoured
 
 2020-10-17  Stanislas Rolland  <typo32020(arobas)sjbr.ca>
 

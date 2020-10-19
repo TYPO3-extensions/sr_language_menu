@@ -28,6 +28,7 @@ namespace SJBR\SrLanguageMenu\Controller;
  */
 
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -181,7 +182,7 @@ class MenuController extends AbstractWidgetController
 		array_unshift($systemLanguages, $defaultSystemLanguage);
 
 		// Get the available page language overlays
-		$availableOverlays = array();
+		$availableOverlays = [];
 
 		// Beware of inaccessible page
 		$page = $this->pageRepository->findByUid($this->getFrontendObject()->id);
@@ -207,6 +208,9 @@ class MenuController extends AbstractWidgetController
 		$options = [];
 		$context = GeneralUtility::makeInstance(Context::class);
 		$languageAspect = $context->getAspect('language');
+		$siteFinder = GeneralUtility::makeInstance(SiteFinder::class);
+		$site = $siteFinder->getSiteByPageId($this->getFrontendObject()->id);
+		$enabledSiteLanguages = array_keys($site->getLanguages());
 		// If $this->settings['languages'] is not empty, the languages will be sorted in the order it specifies
 		$languages = GeneralUtility::trimExplode(',', $this->settings['languages'], true);
 		if (!empty($languages) && !in_array(0, $languages)) {
@@ -214,64 +218,66 @@ class MenuController extends AbstractWidgetController
 		}
 		$index = 0;
 		foreach ($systemLanguages as $systemLanguage) {
-			$option = array(
-				'uid' => $systemLanguage->getUid() ?: 0,
-				'isoCodeA2' => is_object($systemLanguage->getIsoLanguage()) ? $systemLanguage->getIsoLanguage()->getIsoCodeA2() : '',
-				'countryIsoCodeA2' => is_object($systemLanguage->getIsoLanguage()) ? $systemLanguage->getIsoLanguage()->getCountryIsoCodeA2(): ''
-			);
-			// Set combined ISO code
-			$option['combinedIsoCode'] = strtolower($option['isoCodeA2']) . ($option['countryIsoCodeA2'] ? '_' . $option['countryIsoCodeA2'] : '');
-
-			// Set the label
-			switch ($this->settings['languageTitle']) {
-				case '0':
-					$option['title'] = is_object($systemLanguage->getIsoLanguage()) ? $systemLanguage->getIsoLanguage()->getNameLocalized() : '';
-					break;
-				case '1':
-					$option['title'] = is_object($systemLanguage->getIsoLanguage()) ? $systemLanguage->getIsoLanguage()->getLocalName() : '';
-					break;
-				case '2':
-					$option['title'] = $systemLanguage->getTitle();
-					break;
-				case '3':
-					$option['title'] = strtoupper($option['combinedIsoCode']);
-					break;
-			}
-			if (!$option['title']) {
-				$option['title'] = $systemLanguage->getTitle();
-			}
-
-			// Set paths to flags
-			$option['flagFile'] = $this->settings['flagsDirectory']
-				. ($this->settings['alternateFlags'][$option['combinedIsoCode']] ?: $option['combinedIsoCode'])
-				. '.' . $this->settings['flagsExtension'];
-
-			// Set availability of overlay
-			$option['isAvailable'] = in_array($option['uid'], $availableOverlays);
-			$option['notAvailableTitle'] = $option['title'];
-			if (!$option['isAvailable']) {
-				$option['notAvailableTitle'] = LocalizationUtility::translate('translationNotAvailable', $this->extensionName, array($systemLanguage->getIsoLanguage() ? $systemLanguage->getIsoLanguage()->getLocalName() : $option['title']), $option['combinedIsoCode']);
-			}
-
-			// Add configured external url for missing overlay record
-			if ($this->settings['useExternalUrl'][$option['combinedIsoCode']] || is_array($this->settings['useExternalUrl'][$option['combinedIsoCode']])) {
-				if ($option['isAvailable']) {
-					if ($this->settings['forceUseOfExternalUrl'] || (is_array($this->settings['useExternalUrl'][$option['combinedIsoCode']]) && $this->settings['useExternalUrl'][$option['combinedIsoCode']]['force'])) {
-						$option['externalUrl'] = is_array($this->settings['useExternalUrl'][$option['combinedIsoCode']]) ? $this->settings['useExternalUrl'][$option['combinedIsoCode']]['_typoScriptNodeValue'] : $this->settings['useExternalUrl'][$option['combinedIsoCode']];
-					}
-				} else {
-					$option['externalUrl'] = is_array($this->settings['useExternalUrl'][$option['combinedIsoCode']]) ? $this->settings['useExternalUrl'][$option['combinedIsoCode']]['_typoScriptNodeValue'] : $this->settings['useExternalUrl'][$option['combinedIsoCode']];
-					$option['isAvailable'] = true;
+			if (in_array($systemLanguage->getUid(), $enabledSiteLanguages) || !$systemLanguage->getUid()) {
+				$option = [
+					'uid' => $systemLanguage->getUid() ?: 0,
+					'isoCodeA2' => is_object($systemLanguage->getIsoLanguage()) ? $systemLanguage->getIsoLanguage()->getIsoCodeA2() : '',
+					'countryIsoCodeA2' => is_object($systemLanguage->getIsoLanguage()) ? $systemLanguage->getIsoLanguage()->getCountryIsoCodeA2(): ''
+				];
+				// Set combined ISO code
+				$option['combinedIsoCode'] = strtolower($option['isoCodeA2']) . ($option['countryIsoCodeA2'] ? '_' . $option['countryIsoCodeA2'] : '');
+	
+				// Set the label
+				switch ($this->settings['languageTitle']) {
+					case '0':
+						$option['title'] = is_object($systemLanguage->getIsoLanguage()) ? $systemLanguage->getIsoLanguage()->getNameLocalized() : '';
+						break;
+					case '1':
+						$option['title'] = is_object($systemLanguage->getIsoLanguage()) ? $systemLanguage->getIsoLanguage()->getLocalName() : '';
+						break;
+					case '2':
+						$option['title'] = $systemLanguage->getTitle();
+						break;
+					case '3':
+						$option['title'] = strtoupper($option['combinedIsoCode']);
+						break;
 				}
+				if (!$option['title']) {
+					$option['title'] = $systemLanguage->getTitle();
+				}
+	
+				// Set paths to flags
+				$option['flagFile'] = $this->settings['flagsDirectory']
+					. ($this->settings['alternateFlags'][$option['combinedIsoCode']] ?: $option['combinedIsoCode'])
+					. '.' . $this->settings['flagsExtension'];
+	
+				// Set availability of overlay
+				$option['isAvailable'] = in_array($option['uid'], $availableOverlays);
+				$option['notAvailableTitle'] = $option['title'];
+				if (!$option['isAvailable']) {
+					$option['notAvailableTitle'] = LocalizationUtility::translate('translationNotAvailable', $this->extensionName, array($systemLanguage->getIsoLanguage() ? $systemLanguage->getIsoLanguage()->getLocalName() : $option['title']), $option['combinedIsoCode']);
+				}
+	
+				// Add configured external url for missing overlay record
+				if ($this->settings['useExternalUrl'][$option['combinedIsoCode']] || is_array($this->settings['useExternalUrl'][$option['combinedIsoCode']])) {
+					if ($option['isAvailable']) {
+						if ($this->settings['forceUseOfExternalUrl'] || (is_array($this->settings['useExternalUrl'][$option['combinedIsoCode']]) && $this->settings['useExternalUrl'][$option['combinedIsoCode']]['force'])) {
+							$option['externalUrl'] = is_array($this->settings['useExternalUrl'][$option['combinedIsoCode']]) ? $this->settings['useExternalUrl'][$option['combinedIsoCode']]['_typoScriptNodeValue'] : $this->settings['useExternalUrl'][$option['combinedIsoCode']];
+						}
+					} else {
+						$option['externalUrl'] = is_array($this->settings['useExternalUrl'][$option['combinedIsoCode']]) ? $this->settings['useExternalUrl'][$option['combinedIsoCode']]['_typoScriptNodeValue'] : $this->settings['useExternalUrl'][$option['combinedIsoCode']];
+						$option['isAvailable'] = true;
+					}
+				}
+	
+				// Set current language indicator
+				$option['isCurrent'] = ($option['uid'] == $languageAspect->getId());
+	
+				// If $this->settings['languages'] is not empty, the languages will be sorted in the order it specifies
+				$key = array_search($option['uid'], $languages);
+				$key = ($key !== false) ? $key : count($languages) + $index++;
+				$options[$key] = $option;
 			}
-
-			// Set current language indicator
-			$option['isCurrent'] = ($option['uid'] == $languageAspect->getId());
-
-			// If $this->settings['languages'] is not empty, the languages will be sorted in the order it specifies
-			$key = array_search($option['uid'], $languages);
-			$key = ($key !== false) ? $key : count($languages) + $index++;
-			$options[$key] = $option;
 		}
 		ksort($options);
 
